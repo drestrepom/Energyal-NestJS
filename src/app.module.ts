@@ -19,6 +19,5 @@ const URLDB = process.env.urlDB;
 export class AppModule {
 
  async getDatabase() {
-    console.log('url de la base de datos', URLDB );
   }
 }
