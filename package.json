@@ -6,9 +6,11 @@
   "license": "MIT",
   "engines" : { "node" : "11.1.0" },
   "scripts": {
+    "postinstall": "tsc --sourceMap false",
+    "heroku-postbuild": "",
     "build": "tsc -p tsconfig.build.json",
     "format": "prettier --write \"src/**/*.ts\"",
-    "start": "ts-node -r tsconfig-paths/register src/main.ts",
+    "start": "node dist/main.js",
     "start:dev": "nodemon",
     "start:debug": "nodemon --config nodemon-debug.json",
     "prestart:prod": "rimraf dist && npm run build",
@@ -19,7 +21,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "postinstall": "npm run prestart:prod"
+
   },
   "dependencies": {
     "@nestjs/common": "^6.0.0",
