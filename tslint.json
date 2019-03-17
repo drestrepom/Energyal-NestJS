@@ -2,7 +2,9 @@
   "defaultSeverity": "error",
   "extends": ["tslint:recommended"],
   "jsRules": {
-    "no-unused-expression": true
+    "no-unused-expression": true,
+    "no-console": false,
+    "max-line-length": false
   },
   "rules": {
     "quotemark": [true, "single"],
@@ -12,7 +14,8 @@
     "member-ordering": [false],
     "interface-name": [false],
     "arrow-parens": false,
-    "object-literal-sort-keys": false
+    "object-literal-sort-keys": false,
+    "ban-types": false
   },
   "rulesDirectory": []
 }
