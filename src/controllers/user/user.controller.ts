@@ -11,7 +11,6 @@ export class UserController {
 
   @Post()
   register(@Body(DeleteBlankSpacePipe) user: UserDto) {
-    console.log('new USer');
     return this.userSerice.create(user).then(value => {
       return {
         ok: true,

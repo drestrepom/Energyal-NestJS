@@ -1,1 +1,3 @@
-export interface Measurment {}
+export interface Measurment {
+  _id: string;
+}

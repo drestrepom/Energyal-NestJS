@@ -1,5 +1,5 @@
 import { Citys, IUser } from '../interfaces/user.interface';
-import { Electrodomestic } from '../interfaces/electrodomestic.interface';
+import { IElectrodomestic } from '../interfaces/electrodomestic.interface';
 
 export class UserDto implements IUser {
   constructor(user?: IUser) {
@@ -11,7 +11,7 @@ export class UserDto implements IUser {
     this.status = user.status;
   }
   city: string;
-  electrodomestics: [Electrodomestic];
+  electrodomestics: [IElectrodomestic];
   email: string;
   name: string;
   password: string;

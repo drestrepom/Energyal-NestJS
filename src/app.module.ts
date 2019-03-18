@@ -3,21 +3,33 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from './models/user.schema';
+import { ElectrodomesticSchema } from './models/electrodomestic.schema';
 import { UserService } from './services/user/user.service';
 import { UserController } from './controllers/user/user.controller';
 import { ConfigModule } from './config/config.module';
+import { ElectrodomesticService } from './services/electrodomestic/electrodomestic.service';
+import { ElectrodomesticController } from './controllers/electrodomestic/electrodomestic.controller';
+import { MeterService } from './services/meter/meter.service';
+import { MeterController } from './controllers/meter/meter.controller';
+import { MeterSchema } from './models/meter.schema';
+
 const URLDB = process.env.urlDB;
+
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost:27017/enrgyal', {useNewUrlParser: true}),
-    MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
+    MongooseModule.forRoot('mongodb://localhost:27017/enrgyal', { useNewUrlParser: true }),
+    MongooseModule.forFeature([
+      { name: 'User', schema: UserSchema },
+      { name: 'Electrodomestic', schema: ElectrodomesticSchema },
+      { name: 'Meter', schema: MeterSchema },
+    ]),
     // ConfigModule,
   ],
-  controllers: [AppController, UserController],
-  providers: [AppService, UserService],
+  controllers: [AppController, UserController, ElectrodomesticController, MeterController],
+  providers: [AppService, UserService, ElectrodomesticService, MeterService],
 })
 export class AppModule {
 
- async getDatabase() {
+  async getDatabase() {
   }
 }

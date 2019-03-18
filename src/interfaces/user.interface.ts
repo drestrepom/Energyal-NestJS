@@ -1,4 +1,4 @@
-import { Electrodomestic } from './electrodomestic.interface';
+import { IElectrodomestic } from './electrodomestic.interface';
 
 export enum Citys {
   Medellín = 'Medellín',
@@ -11,10 +11,11 @@ export enum Citys {
 }
 
 export interface IUser {
+  _id: string;
   name: string;
   email: string;
   password: string;
   city?: string;
-  electrodomestics?: [Electrodomestic];
+  electrodomestics?: [IElectrodomestic];
   status?: boolean;
 }
