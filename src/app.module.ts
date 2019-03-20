@@ -12,21 +12,26 @@ import { ElectrodomesticController } from './controllers/electrodomestic/electro
 import { MeterService } from './services/meter/meter.service';
 import { MeterController } from './controllers/meter/meter.controller';
 import { MeterSchema } from './models/meter.schema';
+import { MeasurementSchema } from './models/measurment.schema';
+import { MeasurementController } from './controllers/measurment/measurementController';
+import { MeasurmentService } from './services/measurment/measurment.service';
 
 const URLDB = process.env.urlDB;
 
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost:27017/enrgyal', { useNewUrlParser: true }),
+    // MongooseModule.forRoot('mongodb+srv://admin:1193120855@cluster0-xjwrt.mongodb.net/enrgyal?retryWrites=true', { useNewUrlParser: true }),
     MongooseModule.forFeature([
       { name: 'User', schema: UserSchema },
       { name: 'Electrodomestic', schema: ElectrodomesticSchema },
       { name: 'Meter', schema: MeterSchema },
+      { name: 'Measurement', schema: MeasurementSchema },
     ]),
     // ConfigModule,
   ],
-  controllers: [AppController, UserController, ElectrodomesticController, MeterController],
-  providers: [AppService, UserService, ElectrodomesticService, MeterService],
+  controllers: [AppController, UserController, ElectrodomesticController, MeterController, MeasurementController],
+  providers: [AppService, UserService, ElectrodomesticService, MeterService, MeasurmentService],
 })
 export class AppModule {
 

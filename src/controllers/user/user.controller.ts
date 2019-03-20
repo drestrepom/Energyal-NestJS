@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UsePipes } from '@nestjs/common';
+import { Body, Controller, Get, Post, UsePipes, Param, Put } from '@nestjs/common';
 import { UserService } from '../../services/user/user.service';
 import { DeleteBlankSpacePipe } from '../../pipes/delete-blank-space.pipe';
 import * as jwt from 'jsonwebtoken';
@@ -21,16 +21,30 @@ export class UserController {
 
   @Post(':login')
   async login(@Body(DeleteBlankSpacePipe) user: IUser) {
-    return await this.userSerice.login(user).then(value => {
-      const Authorization = jwt.sign({ user: value },
-        process.env.SEED, {
-          expiresIn: process.env.EXPITARION,
-        });
-      return {
-        ok: true,
-        user: value,
-        Authorization,
-      };
+    return this.userSerice.login(user)
+      .then((value: IUser) => {
+        const Authorization = jwt.sign({ user: value },
+          process.env.SEED, {
+            expiresIn: process.env.EXPITARION,
+          });
+        return {
+          ok: true,
+          user: value,
+          Authorization,
+        };
+      });
+  }
+
+  @Get('electrodomestics/:id')
+  async getElectrodomestics(@Param('id') id) {
+    return this.userSerice.getElectrodomestics(id);
+  }
+
+  @Put()
+  async cahallenPassword(@Body() body) {
+    console.log(body);
+    return this.userSerice.challengPassword(body.id, body.password).then(value => {
+      return { ok: value };
     });
   }
 }

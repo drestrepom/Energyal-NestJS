@@ -7,7 +7,7 @@ const models = {
 };
 export const MeterSchema = new Schema({
   serial: {type: String, required: [true, 'El serial es requerido'], unique: true},
-  electrodomestic: {type: Schema.Types.ObjectId, ref: 'Electrodomestic', unique: true},
+  electrodomestic: {type: Schema.Types.ObjectId, ref: 'Electrodomestic', unique: true, required: false},
   model: {type: String, enum: models, required: true},
   status: {type: Boolean, default: true},
 });

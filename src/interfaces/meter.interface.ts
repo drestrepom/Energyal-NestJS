@@ -1,7 +1,7 @@
 export interface IMeter {
   _id: string;
   serial: string;
-  elctrodomestic: string;
+  electrodomestic: string;
   model: string;
   status?: boolean;
 }

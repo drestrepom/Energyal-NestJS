@@ -28,6 +28,7 @@ export const UserSchema: Schema = new Schema({
 UserSchema.methods.toJSON = function() {
   const user = this;
   const userObject = user.toObject();
+  delete user.electrodomestics;
   delete userObject.contrasena;
   return userObject;
 };

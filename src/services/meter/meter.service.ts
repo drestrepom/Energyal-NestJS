@@ -13,24 +13,49 @@ export class MeterService {
 
   async register(meter: IMeter): Promise<IMeter> {
     const newMeter = new this.meterModel(meter);
-    return await newMeter.save().catch(reason => {
-      if (reason.name) {
+    return await newMeter.save()
+      .catch(reason => {
+        if (reason.name) {
+          throw new HttpException({
+            status: HttpStatus.FORBIDDEN,
+            error: reason,
+          }, 403);
+        }
         throw new HttpException({
-          status: HttpStatus.FORBIDDEN,
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
           error: reason,
-        }, 403);
-      }
-      throw new HttpException({
-        status: HttpStatus.INTERNAL_SERVER_ERROR,
-        error: reason,
-      }, 500);
-    });
+        }, 500);
+      });
   }
 
-  async getOne(serial: string) {
-    return await this.meterModel.findOne({ serial }, (err, res) => {
-      new CustomException().getExecptio(err, res, `No se ha encontardo el medidor con el serial ${serial}`);
-      return res;
-    }).populate('electrodomestic', 'voltage');
+  async getOne(serial?: string, id?: string) {
+    if (serial) {
+      return await this.meterModel.findOne({ serial }, async (err, res) => {
+        CustomException.getExecptio(err, res, `No se ha encontardo el medidor con el Serial ${serial}`);
+        return res;
+      }).populate('electrodomestic', 'voltage');
+    }
+    if (id) {
+      return await this.meterModel.findOne({ _id: id }, async (err, res) => {
+        CustomException.getExecptio(err, res, `No se ha encontardo el medidor con el _id ${serial}`);
+        return res;
+        console.log(res);
+      }).populate('electrodomestic', 'voltage');
+    }
+  }
+
+  async setElectrodomestic(idELctro, idMetre) {
+    const meter: IMeter = await this.getOne(null, idMetre);
+    if (meter.electrodomestic) {
+      throw new HttpException({
+        status: HttpStatus.BAD_REQUEST,
+        error: 'El dispositivo es propiedad de otro usuario',
+      }, 400);
+    }
+    return await this.meterModel.findOneAndUpdate({ _id: idMetre }, { electrodomestic: idELctro })
+      .exec((err, res) => {
+        CustomException.updateExceptio(err, res);
+        return res;
+      });
   }
 }

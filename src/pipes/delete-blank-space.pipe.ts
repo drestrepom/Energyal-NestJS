@@ -5,7 +5,9 @@ import { IUser } from '../interfaces/user.interface';
 export class DeleteBlankSpacePipe implements PipeTransform {
   transform(value: any, metadata?: ArgumentMetadata) {
     for (const v in value) {
-     value[v] = value[v].trim();
+      if (typeof v === 'string') {
+        value[v] = value[v].trim();
+      }
     }
     return value;
   }
