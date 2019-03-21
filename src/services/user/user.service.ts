@@ -5,6 +5,8 @@ import { IUser } from '../../interfaces/user.interface';
 import { EncryptPipe } from '../../pipes/encrypt.pipe';
 import * as bcrypt from 'bcrypt';
 import { CustomException } from '../../utils/custom-exception';
+// @ts-ignore
+import * as  emailExistence from 'email-existence';
 
 @Injectable()
 export class UserService {
@@ -12,17 +14,17 @@ export class UserService {
   constructor(@InjectModel('User') private userModel: Model) {
   }
 
-  async create(userDto: IUser): Promise<IUser> {
-    userDto.password = new EncryptPipe().transform(userDto.password);
-    const createUser = new this.userModel(userDto);
+  async create(user: IUser): Promise<IUser> {
+    user.password = new EncryptPipe().transform(user.password);
+    const createUser = new this.userModel(user);
     return await createUser.save().catch(reason => {
       CustomException.saveExceptio(reason);
     });
   }
 
-  async login(userDto: IUser) {
+  async login(user: IUser) {
     return new Promise((resolve, reject) => {
-      this.userModel.findOne({ email: userDto.email }, 'city email name password', (err, res: IUser) => {
+      this.userModel.findOne({ email: user.email }, 'city email name password', (err, res: IUser) => {
         if (err) {
           reject(new HttpException({
             status: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -35,7 +37,7 @@ export class UserService {
             error: 'Usuario o contraseña incorrecta',
           }, 400));
         } else {
-          if (!bcrypt.compareSync(userDto.password, res.password)) {
+          if (!bcrypt.compareSync(user.password, res.password)) {
             reject(new HttpException({
               status: HttpStatus.UNAUTHORIZED,
               error: 'Usuario o contraseña incorrecta',
@@ -61,30 +63,37 @@ export class UserService {
 
   async addElectrodomestic(idUser, idElectro, role?) {
     return await this.userModel.findOne({ _id: idUser }, (err, res) => {
-      res.electrodomestics.push({ electrodomestic: idElectro , role});
+      res.electrodomestics.push({ electrodomestic: idElectro, role });
       res.save();
     });
   }
 
-  async challengPassword(idUser, newPasword): Promise<any> {
-    return await this.userModel.findOneAndUpdate({ _id: idUser }, { password: new EncryptPipe().transform(newPasword) })
-      .exec((err, res) => {
-        if (res) {
-          return true;
-        } else {
-          return false;
-        }
-      });
+  async challengPassword(idUser, oldPassword, newPassword): Promise<any> {
+    let w;
+    await this.userModel.findOne({ _id: idUser }, 'password', (err, res) => {
+      if (bcrypt.compareSync(oldPassword, res.password)) {
+        res.password = new EncryptPipe().transform(newPassword);
+        res.save().then(value => value);
+        w = true;
+      } else {
+        w = false;
+      }
+    });
+    return w;
   }
 
-  // async addElectrodomestic(idUser, idElectro, role?) {
-  //   return await this.userModel.findOneAndUpdate({ _id: idUser }, {
-  //     $push: {
-  //       electrodomestics: {
-  //         electrodomestic: idElectro,
-  //         role,
-  //       },
-  //     },
-  //   });
-  // }
+  emailExist(email): Promise<any> {
+    return new Promise((resolve, reject) => {
+      emailExistence.check(email, (err, inf) => {
+        resolve(inf);
+      });
+    });
+  }
+
+  async userExist(email) {
+    return await this.userModel.findOne({ email }, 'email', (err, res) => {
+      return res;
+    });
+  }
+
 }

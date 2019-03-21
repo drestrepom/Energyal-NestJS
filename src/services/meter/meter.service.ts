@@ -28,11 +28,17 @@ export class MeterService {
       });
   }
 
-  async getOne(serial?: string, id?: string) {
+  async getOne(serial?: string, id?: string): Promise<any> {
+    let result;
+    let exception: HttpException;
     if (serial) {
-      return await this.meterModel.findOne({ serial }, async (err, res) => {
-        CustomException.getExecptio(err, res, `No se ha encontardo el medidor con el Serial ${serial}`);
-        return res;
+      await this.meterModel.findOne({ serial }, (err, res) => {
+        if (!res) {
+          exception = CustomException.noResults(`No se ha encontrado el medidor con el serial ${serial}`);
+        } else if (err) {
+          exception = CustomException.internalError(err);
+        }
+        result = res;
       }).populate('electrodomestic', 'voltage');
     }
     if (id) {
@@ -42,6 +48,7 @@ export class MeterService {
         console.log(res);
       }).populate('electrodomestic', 'voltage');
     }
+    return result == null ? Promise.reject(exception) : Promise.resolve(result);
   }
 
   async setElectrodomestic(idELctro, idMetre) {

@@ -19,9 +19,9 @@ export class MeasurmentService {
     measurement.startTime = new Date(measurement.endTime.getTime() - measurement.interval);
     const joules = measurement.power * measurement.interval;
     console.log('joules', joules);
-    console.log('power', measurement.power);
-    const kwh = joules / 3600000;
-    measurement.value = kwh * 217.53;
+    console.log('kwh', measurement.kwh);
+    measurement.kwh = joules / 3600000;
+    measurement.value = measurement.kwh * 217.53;
     const newMeasurement = new this.measurementModel(measurement);
     return await newMeasurement.save().catch(reason => CustomException.saveExceptio(reason));
   }

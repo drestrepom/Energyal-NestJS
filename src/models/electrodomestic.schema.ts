@@ -37,4 +37,4 @@ export const ElectrodomesticSchema = new Schema({
   status: { type: Boolean, default: true },
 });
 
-ElectrodomesticSchema.plugin(uniqueValidator, { message: '{PATH} debe de ser unico' });
+ElectrodomesticSchema.plugin(uniqueValidator, { message: 'El {PATH} ha sido registrado por otro usuario.' });

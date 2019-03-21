@@ -2,31 +2,44 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 
 export class CustomException {
 
-  static  serverError =   (err) => {
+  static serverError = (err) => {
     if (err) {
       throw new HttpException({
         status: HttpStatus.INTERNAL_SERVER_ERROR,
         error: err,
       }, 500);
     }
-  }
+  };
 
-  static   getExecptio(err?: any, res?: any, message?: string) {
+  static getExecptio(err?: any, res?: any, message?: string) {
     if (err) {
-      return new HttpException({
+      throw new HttpException({
         status: HttpStatus.INTERNAL_SERVER_ERROR,
         error: err,
       }, 400);
     }
     if (!res) {
-      return new HttpException({
+      return Promise.reject(new HttpException({
         status: HttpStatus.BAD_REQUEST,
         error: message,
-      }, 400);
+      }, 400));
     }
   }
 
-  static  saveExceptio(err) {
+  static internalError(error): HttpException {
+    return new HttpException({
+      status: HttpStatus.INTERNAL_SERVER_ERROR,
+      error,
+    }, 400);
+  }
+
+  static noResults(message: string): HttpException {
+    return new HttpException({
+      error: message,
+    },  HttpStatus.BAD_REQUEST);
+  }
+
+  static saveExceptio(err) {
     if (err.name) {
       throw new HttpException({
         status: HttpStatus.FORBIDDEN,
@@ -38,7 +51,7 @@ export class CustomException {
     }
   }
 
-  static  updateExceptio(err, res) {
+  static updateExceptio(err, res) {
     if (err) {
       throw new HttpException({
         status: HttpStatus.FORBIDDEN,
@@ -55,4 +68,5 @@ export class CustomException {
       this.serverError(err);
     }
   }
+
 }
