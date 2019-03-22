@@ -13,7 +13,7 @@ async function bootstrap() {
   process.env.urlDB = process.env.urlDB || 'mongodb://localhost:27017/enrgyal';
   const app = await NestFactory.create(AppModule);
   app.enableCors();
-  await app.listen(process.env.PORT || 3000);
+  await app.listen(process.env.PORT || 3001);
 }
 
 bootstrap();

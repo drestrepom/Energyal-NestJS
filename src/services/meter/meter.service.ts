@@ -36,6 +36,7 @@ export class MeterService {
         if (!res) {
           exception = CustomException.noResults(`No se ha encontrado el medidor con el serial ${serial}`);
         } else if (err) {
+          console.log('error');
           exception = CustomException.internalError(err);
         }
         result = res;

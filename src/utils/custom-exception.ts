@@ -28,15 +28,20 @@ export class CustomException {
 
   static internalError(error): HttpException {
     return new HttpException({
-      status: HttpStatus.INTERNAL_SERVER_ERROR,
       error,
-    }, 400);
+    }, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   static noResults(message: string): HttpException {
     return new HttpException({
       error: message,
-    },  HttpStatus.BAD_REQUEST);
+    }, HttpStatus.BAD_REQUEST);
+  }
+
+  static clientError(message): HttpException {
+    return new HttpException({
+      error: message,
+    }, HttpStatus.BAD_REQUEST);
   }
 
   static saveExceptio(err) {

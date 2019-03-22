@@ -21,9 +21,6 @@ export class MeterController {
 
   @Get(':id')
   async getOne(@Param('id') id: string) {
-    return await this.meterService.getOne(id)
-    //   .catch(reason => {
-    //   throw CustomException.getExecptio(null, null, reason);
-    // });
+    return await this.meterService.getOne(id);
   }
 }

@@ -15,6 +15,8 @@ import { MeterSchema } from './models/meter.schema';
 import { MeasurementSchema } from './models/measurment.schema';
 import { MeasurementController } from './controllers/measurment/measurementController';
 import { MeasurmentService } from './services/measurment/measurment.service';
+import { EventsModule } from './events/events.module';
+import { PruebaGateway } from './gateways/prueba.gateway';
 
 const URLDB = process.env.urlDB;
 
@@ -28,10 +30,11 @@ const URLDB = process.env.urlDB;
       { name: 'Meter', schema: MeterSchema },
       { name: 'Measurement', schema: MeasurementSchema },
     ]),
+    EventsModule,
     // ConfigModule,
   ],
   controllers: [AppController, UserController, ElectrodomesticController, MeterController, MeasurementController],
-  providers: [AppService, UserService, ElectrodomesticService, MeterService, MeasurmentService],
+  providers: [AppService, UserService, ElectrodomesticService, MeterService, MeasurmentService, PruebaGateway],
 })
 export class AppModule {
 
