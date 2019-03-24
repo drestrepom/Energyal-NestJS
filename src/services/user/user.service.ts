@@ -7,6 +7,7 @@ import * as bcrypt from 'bcrypt';
 import { CustomException } from '../../utils/custom-exception';
 // @ts-ignore
 import * as  emailExistence from 'email-existence';
+import { UserSocketService } from '../user-socket/user-socket.service';
 
 @Injectable()
 export class UserService {

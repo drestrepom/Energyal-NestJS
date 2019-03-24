@@ -34,7 +34,7 @@ export class MeasurmentService {
         exception = 'No se encontró el medidor';
       }
       result = res;
-      this.socket.sendMeasuremest(res);
+      // this.socket.sendMeasuremest(res);
 
     }).catch(reason => {
       exception = reason;

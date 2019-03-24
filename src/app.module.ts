@@ -17,6 +17,9 @@ import { MeasurementController } from './controllers/measurment/measurementContr
 import { MeasurmentService } from './services/measurment/measurment.service';
 import { EventsModule } from './events/events.module';
 import { PruebaGateway } from './gateways/prueba.gateway';
+import { MeasurementGateway } from './gateways/measurement.gateway';
+import { UserSocketService } from './services/user-socket/user-socket.service';
+import { SocketUserSchema } from './models/socketUser.schema';
 
 const URLDB = process.env.urlDB;
 
@@ -28,16 +31,14 @@ const URLDB = process.env.urlDB;
       { name: 'User', schema: UserSchema },
       { name: 'Electrodomestic', schema: ElectrodomesticSchema },
       { name: 'Meter', schema: MeterSchema },
+      { name: 'SocketUser', schema: SocketUserSchema },
       { name: 'Measurement', schema: MeasurementSchema },
     ]),
     EventsModule,
     // ConfigModule,
   ],
   controllers: [AppController, UserController, ElectrodomesticController, MeterController, MeasurementController],
-  providers: [AppService, UserService, ElectrodomesticService, MeterService, MeasurmentService, PruebaGateway],
+  providers: [AppService, UserService, ElectrodomesticService, MeterService, MeasurmentService, PruebaGateway, MeasurementGateway, UserSocketService],
 })
 export class AppModule {
-
-  async getDatabase() {
-  }
 }
