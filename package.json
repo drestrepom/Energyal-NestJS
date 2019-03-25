@@ -14,14 +14,13 @@
     "start:dev": "nodemon",
     "start:debug": "nodemon --config nodemon-debug.json",
     "prestart:prod": "rimraf dist && npm run build",
-    "start:prod": "node dist/src/main.js",
+    "start:prod": "node dist/main.js",
     "lint": "tslint -p tsconfig.json -c tslint.json",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
-    "postinstall": "npm run prestart:prod"
+    "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
     "@nestjs/common": "^6.0.0",
@@ -36,6 +35,7 @@
     "email-verify": "^0.2.1",
     "joi": "^14.3.1",
     "jsonwebtoken": "^8.5.0",
+    "moment-timezone": "^0.5.23",
     "mongoose": "^5.4.19",
     "mongoose-unique-validator": "^2.0.2",
     "reflect-metadata": "^0.1.12",

@@ -20,6 +20,8 @@ import { PruebaGateway } from './gateways/prueba.gateway';
 import { MeasurementGateway } from './gateways/measurement.gateway';
 import { UserSocketService } from './services/user-socket/user-socket.service';
 import { SocketUserSchema } from './models/socketUser.schema';
+import { StatsService } from './services/stats/stats.service';
+import { StatsController } from './controllers/stats/stats.controller';
 
 const URLDB = process.env.urlDB;
 
@@ -37,8 +39,8 @@ const URLDB = process.env.urlDB;
     EventsModule,
     // ConfigModule,
   ],
-  controllers: [AppController, UserController, ElectrodomesticController, MeterController, MeasurementController],
-  providers: [AppService, UserService, ElectrodomesticService, MeterService, MeasurmentService, PruebaGateway, MeasurementGateway, UserSocketService],
+  controllers: [AppController, UserController, ElectrodomesticController, MeterController, MeasurementController, StatsController],
+  providers: [AppService, UserService, ElectrodomesticService, MeterService, MeasurmentService, PruebaGateway, MeasurementGateway, UserSocketService, StatsService],
 })
 export class AppModule {
 }

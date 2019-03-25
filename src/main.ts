@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  process.env.TZ = 'US/Hawaii';
   process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
   if (process.env.NODE_ENV === 'dev') {
     process.env.urlDB = 'mongodb://localhost:27017/enrgyal';
@@ -15,5 +16,4 @@ async function bootstrap() {
   app.enableCors();
   await app.listen(process.env.PORT || 3000);
 }
-
 bootstrap();

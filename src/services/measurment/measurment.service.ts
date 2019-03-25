@@ -5,16 +5,17 @@ import { InjectModel } from '@nestjs/mongoose';
 import { IMeasurment } from '../../interfaces/measurment.interface';
 import { CustomException } from '../../utils/custom-exception';
 import { PruebaGateway } from '../../gateways/prueba.gateway';
+import { MeasurementGateway } from '../../gateways/measurement.gateway';
 
 @Injectable()
 export class MeasurmentService {
   // @ts-ignore
   constructor(@InjectModel('Measurement') private measurementModel: Model,
               private meterService: MeterService,
-              private  socket: PruebaGateway) {
+              private  socket: MeasurementGateway) {
   }
 
-  async insert(measurement) {
+  async insert(measurement: IMeasurment) {
     let result;
     let exception;
     const meter = await this.meterService.getOne(measurement.meter);
@@ -22,10 +23,12 @@ export class MeasurmentService {
       return Promise.reject(CustomException.clientError('No ha sido registrado por ningún usuario'));
     }
     measurement.meter = meter._id;
-    measurement.power = meter.electrodomestic.voltage * measurement.irms;
+    const power = meter.electrodomestic.voltage * measurement.irms;
     measurement.endTime = new Date();
-    measurement.startTime = new Date(measurement.endTime.getTime() - measurement.interval);
-    const joules = measurement.power * measurement.interval;
+    measurement.startTime = new Date(new Date().getTime() - measurement.interval);
+    measurement.endTime.setHours(measurement.endTime.getHours() - 5);
+    measurement.startTime.setHours(measurement.startTime.getHours() - 5);
+    const joules = power * measurement.interval;
     measurement.kwh = joules / 3600000;
     measurement.value = measurement.kwh * 217.53;
     const newMeasurement = new this.measurementModel(measurement);
@@ -34,7 +37,7 @@ export class MeasurmentService {
         exception = 'No se encontró el medidor';
       }
       result = res;
-      // this.socket.sendMeasuremest(res);
+      this.socket.sendMeasuremest(res);
 
     }).catch(reason => {
       exception = reason;
