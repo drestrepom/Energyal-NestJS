@@ -57,4 +57,9 @@ export class UserController {
   userExist(@Param('email') email) {
     return this.userSerice.userExist(email).then(value => value);
   }
+
+  @Get()
+  simple() {
+    return 'hola mijo'
+  }
 }
