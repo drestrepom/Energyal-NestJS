@@ -23,11 +23,11 @@ import { SocketUserSchema } from './models/socketUser.schema';
 import { StatsService } from './services/stats/stats.service';
 import { StatsController } from './controllers/stats/stats.controller';
 
-const URLDB = process.env.urlDB;
+const URLDB = process.env.urlDB || 'mongodb://localhost:27017/enrgyal';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost:27017/enrgyal', { useNewUrlParser: true }),
+    MongooseModule.forRoot(URLDB, { useNewUrlParser: true }),
     // MongooseModule.forRoot('mongodb+srv://admin:1193120855@cluster0-xjwrt.mongodb.net/enrgyal?retryWrites=true', { useNewUrlParser: true }),
     MongooseModule.forFeature([
       { name: 'User', schema: UserSchema },
