@@ -27,8 +27,8 @@ const URLDB = process.env.urlDB || 'mongodb://localhost:27017/enrgyal';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(URLDB, { useNewUrlParser: true }),
-    // MongooseModule.forRoot('mongodb+srv://admin:1193120855@cluster0-xjwrt.mongodb.net/enrgyal?retryWrites=true', { useNewUrlParser: true }),
+    // MongooseModule.forRoot(URLDB, { useNewUrlParser: true }),
+    MongooseModule.forRoot('mongodb+srv://admin:1193120855@cluster0-xjwrt.mongodb.net/enrgyal?retryWrites=true', { useNewUrlParser: true }),
     MongooseModule.forFeature([
       { name: 'User', schema: UserSchema },
       { name: 'Electrodomestic', schema: ElectrodomesticSchema },
