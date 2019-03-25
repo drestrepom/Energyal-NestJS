@@ -40,7 +40,8 @@ const URLDB = process.env.urlDB || 'mongodb://localhost:27017/enrgyal';
     // ConfigModule,
   ],
   controllers: [AppController, UserController, ElectrodomesticController, MeterController, MeasurementController, StatsController],
-  providers: [AppService, UserService, ElectrodomesticService, MeterService, MeasurmentService, PruebaGateway, MeasurementGateway, UserSocketService, StatsService],
+  providers: [AppService, UserService, ElectrodomesticService, MeterService, MeasurmentService,
+    PruebaGateway, MeasurementGateway, UserSocketService, StatsService],
 })
 export class AppModule {
 }
