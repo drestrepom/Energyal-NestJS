@@ -6,7 +6,6 @@ import { UserSchema } from './models/user.schema';
 import { ElectrodomesticSchema } from './models/electrodomestic.schema';
 import { UserService } from './services/user/user.service';
 import { UserController } from './controllers/user/user.controller';
-import { ConfigModule } from './config/config.module';
 import { ElectrodomesticService } from './services/electrodomestic/electrodomestic.service';
 import { ElectrodomesticController } from './controllers/electrodomestic/electrodomestic.controller';
 import { MeterService } from './services/meter/meter.service';
@@ -22,13 +21,14 @@ import { UserSocketService } from './services/user-socket/user-socket.service';
 import { SocketUserSchema } from './models/socketUser.schema';
 import { StatsService } from './services/stats/stats.service';
 import { StatsController } from './controllers/stats/stats.controller';
+import { WebhookController } from './controllers/webhook/webhook.controller';
 
 const URLDB = process.env.urlDB || 'mongodb://localhost:27017/enrgyal';
 
 @Module({
   imports: [
-    // MongooseModule.forRoot(URLDB, { useNewUrlParser: true }),
-    MongooseModule.forRoot('mongodb+srv://admin:1193120855@cluster0-xjwrt.mongodb.net/energyal?retryWrites=true', { useNewUrlParser: true }),
+    MongooseModule.forRoot('mongodb://localhost:27017/enrgyal', { useNewUrlParser: true }),
+    // MongooseModule.forRoot('mongodb+srv://admin:1193120855@cluster0-xjwrt.mongodb.net/energyal?retryWrites=true', { useNewUrlParser: true }),
     MongooseModule.forFeature([
       { name: 'User', schema: UserSchema },
       { name: 'Electrodomestic', schema: ElectrodomesticSchema },
@@ -39,7 +39,7 @@ const URLDB = process.env.urlDB || 'mongodb://localhost:27017/enrgyal';
     EventsModule,
     // ConfigModule,
   ],
-  controllers: [AppController, UserController, ElectrodomesticController, MeterController, MeasurementController, StatsController],
+  controllers: [AppController, UserController, ElectrodomesticController, MeterController, MeasurementController, StatsController, WebhookController],
   providers: [AppService, UserService, ElectrodomesticService, MeterService, MeasurmentService,
     PruebaGateway, MeasurementGateway, UserSocketService, StatsService],
 })

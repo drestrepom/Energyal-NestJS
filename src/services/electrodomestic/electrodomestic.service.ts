@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { MeterService } from '../meter/meter.service';
@@ -19,6 +19,7 @@ export class ElectrodomesticService {
     const meter: IMeter = await this.meterService.getOne(electro.meter);
     electro.meter = meter._id;
     electro.users = [{ user }];
+    await this.meterService.property(meter._id);
     const newElctro: IElectrodomestic = await new this.electrodomesticModel(electro).save().catch(async reason => {
       await CustomException.saveExceptio(reason);
     });
@@ -28,8 +29,11 @@ export class ElectrodomesticService {
   }
 
   async getOne(idElectro) {
-    return await this.electrodomesticModel.findOne({ _id: idElectro })
-      .populate('users.user', 'name');
+    return await this.electrodomesticModel.findById(idElectro)
+      .populate('users.user', 'name')
+      .catch(err => {
+        throw CustomException.clientError('No se ha encontrado el electrodoméstico');
+      });
   }
 
 }

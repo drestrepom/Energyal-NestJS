@@ -36,7 +36,6 @@ export class MeterService {
         if (!res) {
           exception = CustomException.noResults(`No se ha encontrado el medidor con el serial ${serial}`);
         } else if (err) {
-          console.log('error');
           exception = CustomException.internalError(err);
         }
         result = res;
@@ -44,9 +43,12 @@ export class MeterService {
     }
     if (id) {
       return await this.meterModel.findOne({ _id: id }, async (err, res) => {
-        CustomException.getExecptio(err, res, `No se ha encontardo el medidor con el _id ${serial}`);
-        return res;
-        console.log(res);
+        if (!res) {
+          exception = CustomException.noResults(`No se ha encontrado el medidor con el serial ${serial}`);
+        } else if (err) {
+          exception = CustomException.internalError(err);
+        }
+        result = res;
       }).populate('electrodomestic', 'voltage');
     }
     return result == null ? Promise.reject(exception) : Promise.resolve(result);
@@ -55,15 +57,23 @@ export class MeterService {
   async setElectrodomestic(idELctro, idMetre) {
     const meter: IMeter = await this.getOne(null, idMetre);
     if (meter.electrodomestic) {
-      throw new HttpException({
-        status: HttpStatus.BAD_REQUEST,
-        error: 'El dispositivo es propiedad de otro usuario',
-      }, 400);
+      throw  CustomException.clientError('El dispositivo es propiedad de otro usuario');
     }
     return await this.meterModel.findOneAndUpdate({ _id: idMetre }, { electrodomestic: idELctro })
       .exec((err, res) => {
         CustomException.updateExceptio(err, res);
         return res;
       });
+  }
+
+  async property(idMetre) {
+    const meter: IMeter = await this.getOne(null, idMetre);
+    if (meter.electrodomestic) {
+      throw  CustomException.clientError('El dispositivo es propiedad de otro usuario');
+    }
+  }
+
+  async deleteElectrodomestic(idMeter) {
+    return this.meterModel.findOneAndUpdate({});
   }
 }

@@ -41,6 +41,7 @@ export class MeasurmentService {
 
     }).catch(reason => {
       exception = reason;
+      console.log(reason);
     });
     return await result == null ? Promise.reject(exception) : Promise.resolve(result);
   }

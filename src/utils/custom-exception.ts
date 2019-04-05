@@ -9,7 +9,7 @@ export class CustomException {
         error: err,
       }, 500);
     }
-  };
+  }
 
   static getExecptio(err?: any, res?: any, message?: string) {
     if (err) {

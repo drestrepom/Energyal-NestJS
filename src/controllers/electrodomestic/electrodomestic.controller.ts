@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query, Request } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query, Request } from '@nestjs/common';
 import { IElectrodomestic } from '../../interfaces/electrodomestic.interface';
 import { ElectrodomesticService } from '../../services/electrodomestic/electrodomestic.service';
 import { Http2ServerRequest } from 'http2';
@@ -16,8 +16,13 @@ export class ElectrodomesticController {
     return await this.electrodomesticService.register(body, user);
   }
 
-  @Get()
- async get(@Query() query) {
-    return await this.electrodomesticService.getOne(query.id);
+  @Get(':id')
+  async get(@Param('id') id) {
+    return await this.electrodomesticService.getOne(id);
+  }
+
+  @Delete(':id')
+  delete() {
+
   }
 }
