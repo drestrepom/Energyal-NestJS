@@ -1,20 +1,13 @@
 import { Schema } from 'mongoose';
 import * as uniqueValidator from 'mongoose-unique-validator';
 
-const categories = {
+export const categories = {
   values: [
-    'televisor',
-    'video juegos',
-    'computador',
-    'estufa',
-    'horno',
-    'lavadora',
-    'aire acondicionado',
-    'ventilador',
-    'microondas',
-    'secador de pelo',
-    'lámpara',
-    'otro',
+    'Cocina',
+    'Baño',
+    'Patio',
+    'Hogar',
+    'Otros',
   ],
   message: '{VALUE} aun no esta en nuestro sistema',
 };
@@ -25,7 +18,7 @@ const userTypes = {
 export const ElectrodomesticSchema = new Schema({
   serial: { unique: true, type: String, required: [true, 'El serial del electrodoméstico es necesario'] },
   name: { type: String, required: [true, 'El nombre de usuario es necesario'], lowercase: true },
-  category: { type: String, default: 'otro', enum: categories, lowercase: true },
+  category: { type: String, default: 'Otro', enum: categories, lowercase: true },
   voltage: { type: Number, required: [false, 'El voltaje de funcionamiento es necesario'] },
   meter: { type: Schema.Types.ObjectId, ref: 'Meter', required: true },
   users: {

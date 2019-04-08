@@ -25,4 +25,9 @@ export class ElectrodomesticController {
   delete() {
 
   }
+
+  @Get('get/categories')
+  getCate() {
+    return this.electrodomesticService.category();
+  }
 }

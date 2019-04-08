@@ -6,6 +6,7 @@ import { IElectrodomestic } from '../../interfaces/electrodomestic.interface';
 import { IMeter } from '../../interfaces/meter.interface';
 import { CustomException } from '../../utils/custom-exception';
 import { UserService } from '../user/user.service';
+import { ElectrodomesticSchema, categories } from '../../models/electrodomestic.schema';
 
 @Injectable()
 export class ElectrodomesticService {
@@ -34,6 +35,10 @@ export class ElectrodomesticService {
       .catch(err => {
         throw CustomException.clientError('No se ha encontrado el electrodoméstico');
       });
+  }
+
+  category() {
+    return categories.values ;
   }
 
 }
