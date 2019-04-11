@@ -8,9 +8,10 @@ import { InjectModel } from '@nestjs/mongoose';
 @WebSocketGateway()
 export class MeasurementGateway implements OnGatewayConnection, OnGatewayDisconnect {
   // @ts-ignore
+  kWhValue = process.env.kwhV;
 
   constructor(private socketService: UserSocketService) {
-
+    console.log(this.kWhValue);
   }
 
   @WebSocketServer()
@@ -46,13 +47,14 @@ export class MeasurementGateway implements OnGatewayConnection, OnGatewayDisconn
   greeting(client: Client, data) {
     console.log(`El cliente ${client.id} mando ${data}`);
   }
+
   @SubscribeMessage('')
   jiji(client: Client, data) {
     console.log(`El cliente ${client.id} mando ${data}`);
   }
 
   sendMeasuremest(measurement) {
-    // console.log(measurement);
+    // console.log(measurement)
     this.server.emit('measurement', measurement);
   }
 }

@@ -8,6 +8,7 @@ import { IMeasurment } from '../../interfaces/measurment.interface';
 import { fdatasyncSync } from 'fs';
 import { ElectrodomesticService } from '../electrodomestic/electrodomestic.service';
 import { error } from 'util';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class StatsService {
@@ -22,6 +23,7 @@ export class StatsService {
     // @ts-ignore
     @InjectModel('Electrodomestic') private meterModel: Model,
     private electrodomesticService: ElectrodomesticService,
+    private userService: UserService,
   ) {
   }
 
@@ -68,29 +70,30 @@ export class StatsService {
     for (let i = 0; i < length; i++) {
       money.push(0);
     }
-    console.log('1');
     await this.userModel.findById(user, 'electrodomestics')
       .populate('electrodomestic').then(async value => {
-        console.log('2');
         const idsElectro = value.electrodomestics.map((electro) => electro.electrodomestic);
         const auxMeters = await this.electrodomesticModel.find({ _id: { $in: idsElectro } });
-        console.log('3');
         meters = auxMeters.map((item) => item.meter);
       });
-    console.log('4');
     const data: [IMeasurment] = await this.measurementModel.find({
       meter: { $in: meters },
       startTime: { $gte: start, $lte: end },
     }, 'endTime startTime kwh value');
-    const dates = [];
+    const dates: Date[] = [];
     const div = (end.getTime() - start.getTime()) / length;
-    for (let i = 0; i <= length; i++) {
-      const itemDate = new Date(start.getTime() + (i * div));
+    for (let i = 0; i < length; i++) {
+      const itemDate = new Date(start.getTime() + ((i + 1) * div));
       dates.push(itemDate);
     }
+    const dbDates = data.map(value => {
+      value.endTime.setHours(value.endTime.getHours() + 5);
+      value.startTime.setHours(value.startTime.getHours() + 5);
+      return value.startTime;
+    });
     let aux = 0;
-    for (let j = 0; j < data.length; j++) {
-      if (data[j].startTime < dates[aux + 1]) {
+    for (let j = 0; j < dbDates.length; j++) {
+      if (dbDates[j] < dates[aux]) {
         kWh[aux] += data[j].kwh;
         money[aux] += data[j].value;
       } else {
@@ -98,6 +101,26 @@ export class StatsService {
       }
     }
     return { kWh, money };
+  }
+
+  async sumUser(user: string, start?: Date, end?: Date) {
+    let dates;
+    const meters = await this.userService.getMeters(user);
+    return await this.measurementModel.aggregate([
+      {
+        $match: {
+          meter: { $in: meters },
+          startTime: { $gte: start, $lte: end },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          kwh: { $sum: '$kwh' }, // Suma de los kwh
+          value: { $sum: '$value' }, // suma del monye
+        },
+      },
+    ]);
   }
 
 }

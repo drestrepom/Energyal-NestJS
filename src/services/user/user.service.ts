@@ -12,7 +12,10 @@ import { UserSocketService } from '../user-socket/user-socket.service';
 @Injectable()
 export class UserService {
   // @ts-ignore
-  constructor(@InjectModel('User') private userModel: Model) {
+
+  constructor(@InjectModel('User') private userModel: Model,
+              // @ts-ignore
+              @InjectModel('Electrodomestic') private electrodomesticModel: Model) {
   }
 
   async create(user: IUser): Promise<IUser> {
@@ -95,6 +98,18 @@ export class UserService {
     return await this.userModel.findOne({ email }, 'email', (err, res) => {
       return res;
     });
+  }
+
+  async getMeters(user) {
+    let meters;
+    await this.userModel.findById(user, 'electrodomestics')
+      .populate('electrodomestic').then(async value => {
+        const idsElectro = value.electrodomestics.map((electro) => electro.electrodomestic);
+        const auxMeters = await this.electrodomesticModel.find({ _id: { $in: idsElectro } });
+        meters = auxMeters.map((item) => item.meter);
+      });
+
+    return meters;
   }
 
 }
