@@ -21,7 +21,6 @@ import { UserSocketService } from './services/user-socket/user-socket.service';
 import { SocketUserSchema } from './models/socketUser.schema';
 import { StatsService } from './services/stats/stats.service';
 import { StatsController } from './controllers/stats/stats.controller';
-import { WebhookController } from './controllers/webhook/webhook.controller';
 
 const URLDB = process.env.urlDB || 'mongodb://localhost:27017/enrgyal';
 
@@ -39,7 +38,7 @@ const URLDB = process.env.urlDB || 'mongodb://localhost:27017/enrgyal';
     EventsModule,
     // ConfigModule,
   ],
-  controllers: [AppController, UserController, ElectrodomesticController, MeterController, MeasurementController, StatsController, WebhookController],
+  controllers: [AppController, UserController, ElectrodomesticController, MeterController, MeasurementController, StatsController],
   providers: [AppService, UserService, ElectrodomesticService, MeterService, MeasurmentService,
     PruebaGateway, MeasurementGateway, UserSocketService, StatsService],
 })
