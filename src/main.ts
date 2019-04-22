@@ -9,9 +9,7 @@ async function bootstrap() {
   process.env.kwhV = process.env.kwhV || '217.53';
   const app = await NestFactory.create(AppModule);
   app.enableCors();
-  await app.listen(process.env.PORT || 3000);
-
-  console.log(process.env.urlDB);
+  await app.listen(process.env.PORT || 3002);
 }
 
 bootstrap();
