@@ -23,4 +23,10 @@ export class MeterController {
   async getOne(@Param('id') id: string) {
     return await this.meterService.getOne(id);
   }
+
+  @Get()
+  get(@Query('serial') serial) {
+    console.log('serila: ', serial);
+    return 'gggg';
+  }
 }

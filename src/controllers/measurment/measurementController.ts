@@ -1,10 +1,10 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { MeasurmentService } from '../../services/measurment/measurment.service';
+import { MeasurementService } from '../../services/measurment/measurement.service';
 import { IMeasurment } from '../../interfaces/measurment.interface';
 
 @Controller('measurement')
 export class MeasurementController {
-  constructor(private measuremestService: MeasurmentService) {
+  constructor(private measuremestService: MeasurementService) {
   }
 
   @Post()

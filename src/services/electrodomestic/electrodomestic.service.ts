@@ -38,7 +38,7 @@ export class ElectrodomesticService {
   }
 
   category() {
-    return categories.values ;
+    return categories.values;
   }
 
 }

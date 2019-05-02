@@ -3,12 +3,10 @@ import { MeterService } from '../meter/meter.service';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { IMeasurment } from '../../interfaces/measurment.interface';
-import { CustomException } from '../../utils/custom-exception';
-import { PruebaGateway } from '../../gateways/prueba.gateway';
-import { MeasurementGateway } from '../../gateways/measurement.gateway';
+import { CustomException } from '../../utils/custom-exception';import { MeasurementGateway } from '../../gateways/measurement.gateway';
 
 @Injectable()
-export class MeasurmentService {
+export class MeasurementService {
   // @ts-ignore
   constructor(@InjectModel('Measurement') private measurementModel: Model,
               private meterService: MeterService,
@@ -37,7 +35,7 @@ export class MeasurmentService {
         exception = 'No se encontró el medidor';
       }
       result = res;
-      this.socket.sendMeasuremest(res);
+      this.socket.sendMeasurements(res);
 
     }).catch(reason => {
       exception = reason;

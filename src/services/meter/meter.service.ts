@@ -39,10 +39,11 @@ export class MeterService {
           exception = CustomException.internalError(err);
         }
         result = res;
-      }).populate('electrodomestic', 'voltage');
+      }).populate('electrodomestic', 'voltage')
+        .populate('electrodomestic', 'users');
     }
     if (id) {
-      return await this.meterModel.findOne({ _id: id }, async (err, res) => {
+      return await this.meterModel.findById(id, async (err, res) => {
         if (!res) {
           exception = CustomException.noResults(`No se ha encontrado el medidor con el serial ${serial}`);
         } else if (err) {
@@ -71,6 +72,14 @@ export class MeterService {
     if (meter.electrodomestic) {
       throw  CustomException.clientError('El dispositivo es propiedad de otro usuario');
     }
+  }
+
+  async getOwner(serial) {
+    let user;
+    await this.getOne(serial).then(async value => {
+      user = value['electrodomestic']['users'][0];
+    });
+    return user;
   }
 
   async deleteElectrodomestic(idMeter) {

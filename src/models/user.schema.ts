@@ -7,7 +7,7 @@ const ciudades = {
   message: '{VALUE} aun no esta en nuestro sistema',
 };
 const roles = {
-  values: ['ADMIN', 'USER'],
+  values: ['ADMIN', 'USER', 'OWNER'],
   message: '{VALUE} no es un rol valido',
 };
 
@@ -19,7 +19,7 @@ export const UserSchema: Schema = new Schema({
   electrodomestics: {
     type: [{
       electrodomestic: { type: Schema.Types.ObjectId, ref: 'Electrodomestic' },
-      role: { type: String, enum: roles, default: 'ADMIN' },
+      role: { type: String, enum: roles, default: 'OWNER' },
     }],
     required: false,
   },

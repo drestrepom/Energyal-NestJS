@@ -1,45 +1,24 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UserSchema } from './models/user.schema';
-import { ElectrodomesticSchema } from './models/electrodomestic.schema';
-import { UserService } from './services/user/user.service';
-import { UserController } from './controllers/user/user.controller';
-import { ElectrodomesticService } from './services/electrodomestic/electrodomestic.service';
-import { ElectrodomesticController } from './controllers/electrodomestic/electrodomestic.controller';
-import { MeterService } from './services/meter/meter.service';
-import { MeterController } from './controllers/meter/meter.controller';
-import { MeterSchema } from './models/meter.schema';
-import { MeasurementSchema } from './models/measurment.schema';
-import { MeasurementController } from './controllers/measurment/measurementController';
-import { MeasurmentService } from './services/measurment/measurment.service';
 import { EventsModule } from './events/events.module';
-import { PruebaGateway } from './gateways/prueba.gateway';
-import { MeasurementGateway } from './gateways/measurement.gateway';
-import { UserSocketService } from './services/user-socket/user-socket.service';
-import { SocketUserSchema } from './models/socketUser.schema';
-import { StatsService } from './services/stats/stats.service';
-import { StatsController } from './controllers/stats/stats.controller';
+import { SERVICES } from './services/index.service';
+import { GATEWAYS } from './gateways/index.gateway';
+import { CONTROLLERS } from './controllers/index.controller';
+import { MODELS } from './models/index.model';
+import { UserGateway } from './gateways/user.gateway';
+import { MeterGateway } from './gateways/meter.gateway';
 
 const URLDB = process.env.urlDB || 'mongodb://localhost:27017/enrgyal';
 
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.URLDB || 'mongodb://localhost:27017/enrgyal', { useNewUrlParser: true }),
-    MongooseModule.forFeature([
-      { name: 'User', schema: UserSchema },
-      { name: 'Electrodomestic', schema: ElectrodomesticSchema },
-      { name: 'Meter', schema: MeterSchema },
-      { name: 'SocketUser', schema: SocketUserSchema },
-      { name: 'Measurement', schema: MeasurementSchema },
-    ]),
+    MongooseModule.forFeature([...MODELS]),
     EventsModule,
     // ConfigModule,
   ],
-  controllers: [AppController, UserController, ElectrodomesticController, MeterController, MeasurementController, StatsController],
-  providers: [AppService, UserService, ElectrodomesticService, MeterService, MeasurmentService,
-    PruebaGateway, MeasurementGateway, UserSocketService, StatsService],
+  controllers: [...CONTROLLERS],
+  providers: [...SERVICES, ...GATEWAYS, UserGateway, MeterGateway],
 })
 export class AppModule {
 }
