@@ -11,9 +11,8 @@ export class MeterGateway {
   }
 
   @SubscribeMessage('newMeterSession')
-  newSession(client: any, payload) {
-    const meter: { serial } = (JSON.parse(payload));
-    this.meterService.getOwner(meter.serial).then(value => { // ingresa medidor en la sala de su dueño
+  newSession(client: any, serial) {
+    this.meterService.getOwner(serial).then(value => { // ingresa medidor en la sala de su dueño
       client.join(value.user); // cada usuario tiene una sala la cual es us id mongo
       // client.join(value.user).broadcast.to('dsfaf').emit()
     });

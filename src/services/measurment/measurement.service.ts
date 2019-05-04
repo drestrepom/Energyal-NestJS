@@ -3,7 +3,9 @@ import { MeterService } from '../meter/meter.service';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { IMeasurment } from '../../interfaces/measurment.interface';
-import { CustomException } from '../../utils/custom-exception';import { MeasurementGateway } from '../../gateways/measurement.gateway';
+import { CustomException } from '../../utils/custom-exception';
+import { MeasurementGateway } from '../../gateways/measurement.gateway';
+import { MeterDto } from '../../dto/meter.dto';
 
 @Injectable()
 export class MeasurementService {
@@ -30,16 +32,16 @@ export class MeasurementService {
     measurement.kwh = joules / 3600000;
     measurement.value = measurement.kwh * 217.53;
     const newMeasurement = new this.measurementModel(measurement);
-    await newMeasurement.save().then(res => {
+    await newMeasurement.save().then(async (res) => {
       if (!res) {
         exception = 'No se encontró el medidor';
       }
       result = res;
-      this.socket.sendMeasurements(res);
+      const client = await this.meterService.getOwner(meter.serial);
+      this.socket.sendMeasurements(res, client.user);
 
     }).catch(reason => {
       exception = reason;
-      console.log(reason);
     });
     return await result == null ? Promise.reject(exception) : Promise.resolve(result);
   }

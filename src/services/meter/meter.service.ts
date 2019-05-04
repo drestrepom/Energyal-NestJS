@@ -39,8 +39,7 @@ export class MeterService {
           exception = CustomException.internalError(err);
         }
         result = res;
-      }).populate('electrodomestic', 'voltage')
-        .populate('electrodomestic', 'users');
+      }).populate('electrodomestic', 'users voltage');
     }
     if (id) {
       return await this.meterModel.findById(id, async (err, res) => {

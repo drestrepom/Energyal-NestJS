@@ -12,7 +12,7 @@ export class UserGateway implements OnGatewayDisconnect {
   async handleMessage(client: Client, userID: any) {
     await this.socketService.addSession(userID, client.id).then(async () => {
       await this.roomService.createRoom({ user: client.id, name: userID });
-      client['join']('melo');
+      client['join'](userID);
     });
   }
 

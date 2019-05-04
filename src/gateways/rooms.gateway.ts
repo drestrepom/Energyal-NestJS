@@ -12,8 +12,8 @@ export class RoomsGateway {
     return 'Hello world!';
   }
 
-  @SubscribeMessage('newSessionMeter')
-  newSessionMeter(client: Client, payload: any) {
-
-  }
+  // @SubscribeMessage('newSessionMeter')
+  // newSessionMeter(client: Client, payload: any) {
+  //
+  // }
 }
