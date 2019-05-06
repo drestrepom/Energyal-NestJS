@@ -2,7 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  process.env.TZ = 'US/Hawaii';
   process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
   process.env.EXPITARION = process.env.EXPITARION || '12h';
   process.env.SEED = process.env.SEED || 'chucho';

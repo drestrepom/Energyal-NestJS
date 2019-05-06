@@ -9,6 +9,7 @@ export class MeasurementController {
 
   @Post()
   async register(@Body() body: IMeasurment) {
+    // console.log(body);
     return await this.measuremestService.insert(body);
   }
 }

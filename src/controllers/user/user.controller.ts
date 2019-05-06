@@ -20,9 +20,9 @@ export class UserController {
   }
 
   @Post(':login')
-  async login(@Body(DeleteBlankSpacePipe) user: IUser) {
+  async login(@Body(DeleteBlankSpacePipe) user) {
     return this.userSerice.login(user)
-      .then((value: IUser) => {
+      .then((value) => {
         const Authorization = jwt.sign({ user: value },
           process.env.SEED, {
             expiresIn: process.env.EXPITARION,

@@ -16,6 +16,7 @@ export const UserSchema: Schema = new Schema({
   email: { unique: true, type: String, required: [true, 'El correo es necesario'] },
   password: { type: String, required: true },
   city: { type: String, default: 'Medellín', enum: ciudades, required: false },
+  stratum: { type: Number, required: true },
   electrodomestics: {
     type: [{
       electrodomestic: { type: Schema.Types.ObjectId, ref: 'Electrodomestic' },
@@ -32,7 +33,7 @@ UserSchema.methods.toJSON = function() {
   delete userObject.contrasena;
   return userObject;
 };
-UserSchema.plugin(uniqueValidator, {message: '{PATH} debe de ser unico'});
+UserSchema.plugin(uniqueValidator, { message: '{PATH} debe de ser unico' });
 
 // @ts-ignore
 // export const UserSchema: Model<IUser> = model<IUser>('User', userSchema);

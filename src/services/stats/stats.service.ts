@@ -104,7 +104,6 @@ export class StatsService {
   }
 
   async sumUser(user: string, start?: Date, end?: Date) {
-    let dates;
     const meters = await this.userService.getMeters(user);
     return await this.measurementModel.aggregate([
       {
@@ -122,5 +121,4 @@ export class StatsService {
       },
     ]);
   }
-
 }

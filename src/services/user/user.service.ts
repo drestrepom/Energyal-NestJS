@@ -28,7 +28,7 @@ export class UserService {
 
   async login(user: IUser) {
     return new Promise((resolve, reject) => {
-      this.userModel.findOne({ email: user.email }, 'city email name password', (err, res: IUser) => {
+      this.userModel.findOne({ email: user.email }, 'city email name password stratum', (err, res) => {
         if (err) {
           reject(new HttpException({
             status: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -112,4 +112,7 @@ export class UserService {
     return meters;
   }
 
+  async getOne(id) {
+    return await this.userModel.findById(id);
+  }
 }

@@ -5,6 +5,7 @@ import { SocketUserSchema } from './socketUser.schema';
 import { MeasurementSchema } from './measurment.schema';
 import { RoomSchema } from './room.model';
 import { ParameterSchema } from './parameter.model';
+import { ValueKwhSchema } from './valueKwh.model';
 
 export const MODELS = [
   { name: 'User', schema: UserSchema },
@@ -14,4 +15,5 @@ export const MODELS = [
   { name: 'Measurement', schema: MeasurementSchema },
   { name: 'Room', schema: RoomSchema },
   { name: 'Parameter', schema: ParameterSchema },
+  { name: 'valueKwh', schema: ValueKwhSchema },
 ];
