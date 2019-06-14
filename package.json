@@ -28,7 +28,7 @@
     "@nestjs/platform-express": "^6.0.0",
     "@nestjs/platform-socket.io": "^6.0.2",
     "@nestjs/websockets": "^6.0.2",
-    "bcrypt": "^3.0.4",
+    "bcrypt": "^3.0.6",
     "dotenv": "^7.0.0",
     "email-existence": "^0.1.6",
     "email-verify": "^0.2.1",
@@ -59,7 +59,7 @@
     "ts-node": "^7.0.1",
     "tsconfig-paths": "^3.7.0",
     "tslint": "5.12.1",
-    "typescript": "^3.2.4"
+    "typescript": "^3.4.5"
   },
   "jest": {
     "moduleFileExtensions": [

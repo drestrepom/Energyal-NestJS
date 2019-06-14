@@ -16,13 +16,16 @@ export class ParameterService {
   }
 
   update(dates: { user, scale, kwh, money }) {
+    console.log(dates);
     this.parameterModel.findOne({ user: dates.user }, ((err, res) => {
-      res['parameters'][dates.scale] = {
-        kwh: dates.kwh,
-        money: dates.money,
-      };
-      res.save().then(value => {
-      });
+      if(res){
+        res['parameters'][dates.scale] = {
+          kwh: dates.kwh,
+          money: dates.money,
+        };
+        res.save().then(value => {
+        });
+      }
     }));
   }
 

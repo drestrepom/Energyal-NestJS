@@ -7,6 +7,7 @@ import { CustomException } from '../../utils/custom-exception';
 import { MeasurementGateway } from '../../gateways/measurement.gateway';
 import { UserService } from '../user/user.service';
 import { ValueKwhService } from '../value-kwh/value-kwh.service';
+import { ElectrodomesticService } from '../electrodomestic/electrodomestic.service';
 
 @Injectable()
 export class MeasurementService {
@@ -15,7 +16,8 @@ export class MeasurementService {
               private meterService: MeterService,
               private  socket: MeasurementGateway,
               private userService: UserService,
-              private valueKwhService: ValueKwhService) {
+              private valueKwhService: ValueKwhService,
+) {
   }
 
   async insert(measurement: IMeasurment) {
@@ -32,13 +34,8 @@ export class MeasurementService {
     const client = await this.meterService.getOwner(meter.serial);
     const user = await this.userService.getOne(client.user);
     const valueKwh = await this.valueKwhService.get(user.stratum);
-
     measurement.meter = meter._id;
     const power: number = meter.electrodomestic.voltage * measurement.irms;
-
-    console.log({ power: power / 1000, irms: measurement.irms, voltage: meter.electrodomestic.voltage });
-
-    const joules = power * measurement.interval;
     measurement.kwh = power / 1000;
     measurement.value = (power / 1000) * valueKwh.value;
     const newMeasurement = new this.measurementModel(measurement);
@@ -46,9 +43,8 @@ export class MeasurementService {
       if (!res) {
         exception = 'No se encontró el medidor';
       }
-      result = res;
       this.socket.sendMeasurements(res, client.user);
-
+      result = res;
     }).catch(reason => {
       exception = reason;
     });

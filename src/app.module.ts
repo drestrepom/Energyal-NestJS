@@ -8,6 +8,7 @@ import { ParameterService } from './services/parameter/parameter.service';
 import { ParameterController } from './controllers/parameter/parameter.controller';
 import { ValueKwhService } from './services/value-kwh/value-kwh.service';
 import { ValueKwhController } from './controllers/value-kwh/value-kwh.controller';
+import { ElectrodomesticGateway } from './gateways/electrodomestic.gateway';
 
 const URLDB = process.env.urlDB || 'mongodb://localhost:27017/enrgyal';
 
@@ -18,7 +19,7 @@ const URLDB = process.env.urlDB || 'mongodb://localhost:27017/enrgyal';
   ],
   controllers: [...CONTROLLERS, ParameterController, ValueKwhController],
   providers: [
-    ...SERVICES, ...GATEWAYS, ParameterService, ValueKwhService],
+    ...SERVICES, ...GATEWAYS, ParameterService, ValueKwhService, ElectrodomesticGateway],
 })
 export class AppModule {
 }

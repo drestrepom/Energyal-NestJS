@@ -3,11 +3,11 @@ import * as uniqueValidator from 'mongoose-unique-validator';
 
 export const categories = {
   values: [
-    'Cocina',
-    'Baño',
-    'Patio',
-    'Hogar',
-    'Otros',
+    'cocina',
+    'baño',
+    'patio',
+    'hogar',
+    'otros',
   ],
   message: '{VALUE} aun no esta en nuestro sistema',
 };
@@ -21,6 +21,7 @@ export const ElectrodomesticSchema = new Schema({
   category: { type: String, default: 'Otro', enum: categories, lowercase: true },
   voltage: { type: Number, required: [false, 'El voltaje de funcionamiento es necesario'] },
   meter: { type: Schema.Types.ObjectId, ref: 'Meter', required: true },
+  onOff: {type: Boolean, required: false, default: false},
   users: {
     type: [{
       user: { type: Schema.Types.ObjectId, ref: 'User' },

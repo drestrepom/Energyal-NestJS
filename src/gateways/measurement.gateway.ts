@@ -31,8 +31,6 @@ export class MeasurementGateway {
   @SubscribeMessage('measurement')
   async registerMeasurement(client: Client, payload: any) {
     const measurement: IMeasurment = JSON.parse(payload);
-    console.log(measurement);
-    return 'vdssdf';
     return await this.measurementService.insert(measurement);
   }
 

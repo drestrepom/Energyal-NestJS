@@ -41,4 +41,17 @@ export class ElectrodomesticService {
     return categories.values;
   }
 
+  async updateOnOff(id) {
+    let elect = null;
+    await this.electrodomesticModel.findById(id, (err, res) => {
+      res.onOff = !res.onOff;
+      elect = res;
+      res.save();
+    });
+    return elect;
+  }
+
+  async getOnoOff(serial) {
+    return await this.electrodomesticModel.findOne({serial}, 'onOff');
+  }
 }
