@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, UsePipes, Param, Put, Query } from '@nestj
 import { UserService } from '../../services/user/user.service';
 import { DeleteBlankSpacePipe } from '../../pipes/delete-blank-space.pipe';
 import * as jwt from 'jsonwebtoken';
-import { IUser } from '../../interfaces/user.interface';
+import { UserDto } from './../../dto/user.dto';
 
 @Controller('user')
 export class UserController {
@@ -10,7 +10,7 @@ export class UserController {
   }
 
   @Post()
-  register(@Body(DeleteBlankSpacePipe) user: IUser) {
+  register(@Body(DeleteBlankSpacePipe) user: UserDto) {
     return this.userSerice.create(user).then(value => {
       return {
         ok: true,

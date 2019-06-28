@@ -6,7 +6,9 @@ async function bootstrap() {
   process.env.EXPITARION = process.env.EXPITARION || '12h';
   process.env.SEED = process.env.SEED || 'chucho';
   process.env.kwhV = process.env.kwhV || '217.53';
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: console,
+  });
   app.enableCors();
   await app.listen(process.env.PORT || 3000);
 }

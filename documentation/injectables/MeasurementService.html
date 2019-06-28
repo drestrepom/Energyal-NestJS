@@ -65,9 +65,6 @@
                                 id="xs-classes-links"
                             >
                                 <li class="link">
-                                    <a href="../classes/ConfigService.html" >ConfigService</a>
-                                </li>
-                                <li class="link">
                                     <a href="../classes/CustomException.html" >CustomException</a>
                                 </li>
                                 <li class="link">
@@ -156,9 +153,6 @@
                         <ul class="links collapse in"
                                 id="xs-interfaces-links"
                             >
-                                <li class="link">
-                                    <a href="../interfaces/EnvConfig.html" >EnvConfig</a>
-                                </li>
                                 <li class="link">
                                     <a href="../interfaces/IDocument.html" >IDocument</a>
                                 </li>
@@ -254,9 +248,6 @@
                                        id="classes-links"
                    >
                                        <li class="link">
-                                           <a href="../classes/ConfigService.html" >ConfigService</a>
-                                       </li>
-                                       <li class="link">
                                            <a href="../classes/CustomException.html" >CustomException</a>
                                        </li>
                                        <li class="link">
@@ -345,9 +336,6 @@
                                <ul class="links collapse in"
                                        id="interfaces-links"
                    >
-                                       <li class="link">
-                                           <a href="../interfaces/EnvConfig.html" >EnvConfig</a>
-                                       </li>
                                        <li class="link">
                                            <a href="../interfaces/IDocument.html" >IDocument</a>
                                        </li>
@@ -478,6 +466,7 @@ import { CustomException } from &#x27;../../utils/custom-exception&#x27;;
 import { MeasurementGateway } from &#x27;../../gateways/measurement.gateway&#x27;;
 import { UserService } from &#x27;../user/user.service&#x27;;
 import { ValueKwhService } from &#x27;../value-kwh/value-kwh.service&#x27;;
+import { ElectrodomesticService } from &#x27;../electrodomestic/electrodomestic.service&#x27;;
 
 @Injectable()
 export class MeasurementService {
@@ -486,7 +475,8 @@ export class MeasurementService {
               private meterService: MeterService,
               private  socket: MeasurementGateway,
               private userService: UserService,
-              private valueKwhService: ValueKwhService) {
+              private valueKwhService: ValueKwhService,
+) {
   }
 
   async insert(measurement: IMeasurment) {
@@ -503,13 +493,8 @@ export class MeasurementService {
     const client &#x3D; await this.meterService.getOwner(meter.serial);
     const user &#x3D; await this.userService.getOne(client.user);
     const valueKwh &#x3D; await this.valueKwhService.get(user.stratum);
-
     measurement.meter &#x3D; meter._id;
     const power: number &#x3D; meter.electrodomestic.voltage * measurement.irms;
-
-    console.log({ power: power / 1000, irms: measurement.irms, voltage: meter.electrodomestic.voltage });
-
-    const joules &#x3D; power * measurement.interval;
     measurement.kwh &#x3D; power / 1000;
     measurement.value &#x3D; (power / 1000) * valueKwh.value;
     const newMeasurement &#x3D; new this.measurementModel(measurement);
@@ -517,9 +502,8 @@ export class MeasurementService {
       if (!res) {
         exception &#x3D; &#x27;No se encontró el medidor&#x27;;
       }
-      result &#x3D; res;
       this.socket.sendMeasurements(res, client.user);
-
+      result &#x3D; res;
     }).catch(reason &#x3D;&gt; {
       exception &#x3D; reason;
     });

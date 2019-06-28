@@ -1,32 +1,41 @@
 import { Model } from 'mongoose';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { IUser } from '../../interfaces/user.interface';
 import { EncryptPipe } from '../../pipes/encrypt.pipe';
 import * as bcrypt from 'bcrypt';
 import { CustomException } from '../../utils/custom-exception';
 // @ts-ignore
 import * as  emailExistence from 'email-existence';
 import { UserSocketService } from '../user-socket/user-socket.service';
+import { ParameterService } from '../parameter/parameter.service';
+import { UserDto } from './../../dto/user.dto';
+import { ParameterDto } from './../../dto/parameter.dto';
 
 @Injectable()
 export class UserService {
-  // @ts-ignore
-
-  constructor(@InjectModel('User') private userModel: Model,
-              // @ts-ignore
-              @InjectModel('Electrodomestic') private electrodomesticModel: Model) {
+  constructor(
+    // @ts-ignore
+    @InjectModel('User') private userModel: Model,
+    // @ts-ignore
+    @InjectModel('Electrodomestic') private electrodomesticModel: Model,
+    private parameterService: ParameterService,
+  ) {
   }
 
-  async create(user: IUser): Promise<IUser> {
+  async create(user: UserDto): Promise<UserDto> {
     user.password = new EncryptPipe().transform(user.password);
-    const createUser = new this.userModel(user);
-    return await createUser.save().catch(reason => {
-      CustomException.saveExceptio(reason);
-    });
+    return await new this.userModel(user).save()
+      .then(value => {
+        const param = new ParameterDto();
+        param.user = value._id;
+        this.parameterService.add(param);
+      })
+      .catch(reason => {
+        CustomException.saveExceptio(reason);
+      });
   }
 
-  async login(user: IUser) {
+  async login(user: UserDto) {
     return new Promise((resolve, reject) => {
       this.userModel.findOne({ email: user.email }, 'city email name password stratum', (err, res) => {
         if (err) {
@@ -54,7 +63,7 @@ export class UserService {
     });
   }
 
-  async findAll(): Promise<[IUser]> {
+  async findAll(): Promise<[UserDto]> {
     return await this.userModel.find().exec();
   }
 

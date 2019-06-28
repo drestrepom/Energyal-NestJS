@@ -37,7 +37,7 @@ export class MeasurementService {
     measurement.meter = meter._id;
     const power: number = meter.electrodomestic.voltage * measurement.irms;
     measurement.kwh = power / 1000;
-    measurement.value = (power / 1000) * valueKwh.value;
+    measurement.value = ((power / 1000) * valueKwh.value)/3600;
     const newMeasurement = new this.measurementModel(measurement);
     await newMeasurement.save().then(async (res) => {
       if (!res) {

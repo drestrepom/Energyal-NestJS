@@ -277,6 +277,7 @@ DocProject/Help/*.hhk
 DocProject/Help/*.hhp
 DocProject/Help/Html2
 DocProject/Help/html
+documentation/git
 
 # Click-Once directory
 publish/
@@ -379,6 +380,8 @@ FakesAssemblies/
 # Node.js Tools for Visual Studio
 .ntvs_analysis.dat
 node_modules/
+dist/
+documentation/
 
 # Visual Studio 6 build log
 *.plg

@@ -1,12 +1,13 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { MeterService } from '../meter/meter.service';
-import { IElectrodomestic } from '../../interfaces/electrodomestic.interface';
-import { IMeter } from '../../interfaces/meter.interface';
 import { CustomException } from '../../utils/custom-exception';
 import { UserService } from '../user/user.service';
-import { ElectrodomesticSchema, categories } from '../../models/electrodomestic.schema';
+import { categories } from '../../models/electrodomestic.schema';
+import { ElectrodomesticDto } from '../../dto/electrodomestic.dto';
+import { MeterDto } from './../../dto/meter.dto';
+
 
 @Injectable()
 export class ElectrodomesticService {
@@ -16,12 +17,12 @@ export class ElectrodomesticService {
               private  userService: UserService) {
   }
 
-  async register(electro: IElectrodomestic, user: String) {
-    const meter: IMeter = await this.meterService.getOne(electro.meter);
+  async register(electro: ElectrodomesticDto, user: String) {
+    const meter: MeterDto = await this.meterService.getOne(electro.meter);
     electro.meter = meter._id;
     electro.users = [{ user }];
-    await this.meterService.property(meter._id);
-    const newElctro: IElectrodomestic = await new this.electrodomesticModel(electro).save().catch(async reason => {
+    await this.meterService.owner(meter._id);
+    const newElctro: ElectrodomesticDto = await new this.electrodomesticModel(electro).save().catch(async reason => {
       await CustomException.saveExceptio(reason);
     });
     await this.meterService.setElectrodomestic(newElctro._id, newElctro.meter);
@@ -37,7 +38,7 @@ export class ElectrodomesticService {
       });
   }
 
-  category() {
+  static category() {
     return categories.values;
   }
 
@@ -52,6 +53,6 @@ export class ElectrodomesticService {
   }
 
   async getOnoOff(serial) {
-    return await this.electrodomesticModel.findOne({serial}, 'onOff');
+    return await this.electrodomesticModel.findOne({ serial }, 'onOff');
   }
 }

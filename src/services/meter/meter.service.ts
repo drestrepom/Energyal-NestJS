@@ -1,9 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { IMeter } from '../../interfaces/meter.interface';
-import { IUser } from '../../interfaces/user.interface';
 import { CustomException } from '../../utils/custom-exception';
+import { MeterDto } from './../../dto/meter.dto';
 
 @Injectable()
 export class MeterService {
@@ -11,7 +10,7 @@ export class MeterService {
   constructor(@InjectModel('Meter') private meterModel: Model) {
   }
 
-  async register(meter: IMeter): Promise<IMeter> {
+  async register(meter: MeterDto): Promise<MeterDto> {
     const newMeter = new this.meterModel(meter);
     return await newMeter.save()
       .catch(reason => {
@@ -55,7 +54,7 @@ export class MeterService {
   }
 
   async setElectrodomestic(idELctro, idMetre) {
-    const meter: IMeter = await this.getOne(null, idMetre);
+    const meter: MeterDto = await this.getOne(null, idMetre);
     if (meter.electrodomestic) {
       throw  CustomException.clientError('El dispositivo es propiedad de otro usuario');
     }
@@ -66,8 +65,8 @@ export class MeterService {
       });
   }
 
-  async property(idMetre) {
-    const meter: IMeter = await this.getOne(null, idMetre);
+  async owner(idMetre) {
+    const meter: MeterDto = await this.getOne(null, idMetre);
     if (meter.electrodomestic) {
       throw  CustomException.clientError('El dispositivo es propiedad de otro usuario');
     }

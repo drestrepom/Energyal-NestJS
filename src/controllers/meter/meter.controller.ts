@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Post, Query, Param, Put } from '@nestjs/common';
-import { IMeter } from '../../interfaces/meter.interface';
 import { DeleteBlankSpacePipe } from '../../pipes/delete-blank-space.pipe';
 import { MeterService } from '../../services/meter/meter.service';
 import { CustomException } from '../../utils/custom-exception';
+import { MeterDto } from '../../../documentation/js/search/search_index';
 
 @Controller('meter')
 export class MeterController {
@@ -10,7 +10,7 @@ export class MeterController {
   }
 
   @Post()
-  async register(@Body(DeleteBlankSpacePipe) body: IMeter) {
+  async register(@Body(DeleteBlankSpacePipe) body: MeterDto) {
     return await this.meterService.register(body).then(value => {
       return {
         ok: true,

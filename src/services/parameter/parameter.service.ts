@@ -2,8 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ParameterDto } from '../../dto/parameter.dto';
-import { scales } from '../../models/parameter.model';
-import { date } from 'joi';
+
 
 @Injectable()
 export class ParameterService {
@@ -16,15 +15,13 @@ export class ParameterService {
   }
 
   update(dates: { user, scale, kwh, money }) {
-    console.log(dates);
     this.parameterModel.findOne({ user: dates.user }, ((err, res) => {
-      if(res){
+      if (res) {
         res['parameters'][dates.scale] = {
           kwh: dates.kwh,
           money: dates.money,
         };
-        res.save().then(value => {
-        });
+        res.save().then(value => { });
       }
     }));
   }

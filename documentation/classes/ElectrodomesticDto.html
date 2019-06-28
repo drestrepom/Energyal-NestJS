@@ -65,9 +65,6 @@
                                 id="xs-classes-links"
                             >
                                 <li class="link">
-                                    <a href="../classes/ConfigService.html" >ConfigService</a>
-                                </li>
-                                <li class="link">
                                     <a href="../classes/CustomException.html" >CustomException</a>
                                 </li>
                                 <li class="link">
@@ -156,9 +153,6 @@
                         <ul class="links collapse in"
                                 id="xs-interfaces-links"
                             >
-                                <li class="link">
-                                    <a href="../interfaces/EnvConfig.html" >EnvConfig</a>
-                                </li>
                                 <li class="link">
                                     <a href="../interfaces/IDocument.html" >IDocument</a>
                                 </li>
@@ -254,9 +248,6 @@
                                        id="classes-links"
                    >
                                        <li class="link">
-                                           <a href="../classes/ConfigService.html" >ConfigService</a>
-                                       </li>
-                                       <li class="link">
                                            <a href="../classes/CustomException.html" >CustomException</a>
                                        </li>
                                        <li class="link">
@@ -346,9 +337,6 @@
                                        id="interfaces-links"
                    >
                                        <li class="link">
-                                           <a href="../interfaces/EnvConfig.html" >EnvConfig</a>
-                                       </li>
-                                       <li class="link">
                                            <a href="../interfaces/IDocument.html" >IDocument</a>
                                        </li>
                                        <li class="link">
@@ -423,6 +411,13 @@
             <code>src/dto/electrodomestic.dto.ts</code>
         </p>
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Clase para representar un documento</p>
+
+            </p>
 
 
 
@@ -442,6 +437,12 @@
             </bcode>
                                 </td>
                             </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>id asignada por mongo </p>
+            </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -455,6 +456,12 @@
                                 <td class="col-md-4">
                                     <code>category:     <code>string</code>
             </bcode>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Categoria a la cual pertenece </p>
+            </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -472,6 +479,12 @@
             </bcode>
                                 </td>
                             </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>id del medidor que le ha asignado el usuario </p>
+            </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -485,6 +498,33 @@
                                 <td class="col-md-4">
                                     <code>name:     <code>string</code>
             </bcode>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Nombre que le da el usuario </p>
+            </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b> onOff</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <code>onOff:     <code>boolean</code>
+            </bcode>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Estado el electrodomestico (encendido/ apagado) </p>
+            </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -502,6 +542,12 @@
             </bcode>
                                 </td>
                             </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Serial de fabrica </p>
+            </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -515,6 +561,12 @@
                                 <td class="col-md-4">
                                     <code>status:     <code>boolean</code>
             </bcode>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Estado dentro de la base de datos  </p>
+            </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -532,6 +584,12 @@
             </bcode>
                                 </td>
                             </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Usuarios que tienen acceso al electrodoméstico </p>
+            </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -547,6 +605,12 @@
             </bcode>
                                 </td>
                             </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Voltage de funcionamiento </p>
+            </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
             </section>
@@ -554,18 +618,43 @@
     <div class="tab-pane fade tab-source-code" id="source">
         <pre><code class="hljs javascript">import { IDocument } from &#x27;./IDocument&#x27;;
 
+/**
+ * Clase para representar un documento
+ */
 export class ElectrodomesticDto implements IDocument {
+
+  /** id asignada por mongo */
   _id: string;
+
+  /** Serial de fabrica */
   serial: string;
+
+  /** Nombre que le da el usuario */
   name: string;
+
+  /** Categoria a la cual pertenece */
   category: string;
+
+  /** Voltage de funcionamiento */
   voltage: string;
+
+  /** Estado el electrodomestico (encendido/ apagado) */
+  onOff: boolean;
+
+  /** id del medidor que le ha asignado el usuario */
   meter: string;
+
+  /** Usuarios que tienen acceso al electrodoméstico */
   users: string[];
+
+  /** Estado dentro de la base de datos  */
   status: boolean;
 
 }
 
+/**
+ * Roles que puede tener un usuario sobre un electrodoméstico
+ */
 enum roles {
   &#x27;ADMIN&#x27;,
   &#x27;USER&#x27;,

@@ -27,7 +27,7 @@ export class ElectrodomesticDto implements IDocument {
   meter: string;
 
   /** Usuarios que tienen acceso al electrodoméstico */
-  users: string[];
+  users: [{user: String, rol?: string}];
 
   /** Estado dentro de la base de datos  */
   status: boolean;
